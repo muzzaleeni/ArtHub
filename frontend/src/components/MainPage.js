@@ -36,7 +36,7 @@ const MainPage = () => {
       </nav>
 
       <div className="content">
-        <h1>Welcome to the Drawers Web App</h1>
+        <h1>Welcome to the ArtHub community</h1>
         <p>Express your creativity and collaborate with others!</p>
 
         {/* Rest of the content */}
