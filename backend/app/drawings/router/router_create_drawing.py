@@ -1,8 +1,8 @@
 from fastapi import Depends, HTTPException
-from app.auth.adapters.jwt_service import JWTData
-from app.auth.router.dependencies import parse_jwt_user_data
+from backend.app.auth.adapters.jwt_service import JWTData
+from backend.app.auth.router.dependencies import parse_jwt_user_data
 from pydantic import BaseModel
-from app.drawings.service import Service, get_service
+from backend.app.drawings.service import Service, get_service
 from . import router
 
 

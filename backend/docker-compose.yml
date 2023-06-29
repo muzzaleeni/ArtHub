@@ -3,8 +3,8 @@ version: "3.8"
 services:
   app:
     build:
-      context: .
-      dockerfile: ./deploy/dockerfiles/Dockerfile
+      context: ..
+      dockerfile: deploy/dockerfiles/Dockerfile
     environment:
       - MONGOHOST=mongodb
     env_file: .env
