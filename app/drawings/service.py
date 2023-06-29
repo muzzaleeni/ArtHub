@@ -3,7 +3,7 @@ from pydantic import BaseSettings
 from app.config import database
 
 from .adapters.jwt_service import JwtService
-from .repository.repository import AuthRepository
+from .repository.repository import DrawingRepository
 import os
 from dotenv import load_dotenv
 
@@ -23,7 +23,7 @@ class Service:
     def __init__(
 
             self,
-            repository: AuthRepository,
+            repository: DrawingRepository,
             jwt_svc: JwtService,
 
     ):
@@ -32,7 +32,7 @@ class Service:
 
 
 def get_service():
-    repository = AuthRepository(database)
+    repository = DrawingRepository(database)
     jwt_svc = JwtService(config.JWT_ALG, config.JWT_SECRET, config.JWT_EXP)
 
     svc = Service(repository, jwt_svc)
