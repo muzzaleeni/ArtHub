@@ -1,7 +1,5 @@
 from pydantic import BaseSettings
-
 from app.config import database
-
 from .adapters.jwt_service import JwtService
 from .repository.repository import DrawingRepository
 import os
@@ -21,11 +19,9 @@ config = AuthConfig()
 
 class Service:
     def __init__(
-
-            self,
-            repository: DrawingRepository,
-            jwt_svc: JwtService,
-
+        self,
+        repository: DrawingRepository,
+        jwt_svc: JwtService,
     ):
         self.repository = repository
         self.jwt_svc = jwt_svc

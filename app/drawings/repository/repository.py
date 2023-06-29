@@ -1,24 +1,18 @@
 from datetime import datetime
-from typing import List
-
 from bson.objectid import ObjectId
 from pymongo.database import Database
-import uuid
+from typing import List
 
 
 class DrawingRepository:
     def __init__(self, database: Database):
         self.database = database
 
-    def create_drawing(self, user_id: str, tweet_data: dict) -> str:
+    def create_drawing(self, user_id: str, drawing_data: dict) -> str:
         payload = {
-            "created_by": user_id,
-            "type": tweet_data["type"],
-            "price": tweet_data["price"],
-            "address": tweet_data["address"],
-            "area": tweet_data["area"],
-            "rooms_count": tweet_data["rooms_count"],
-            "description": tweet_data["description"],
+            "created_by": ObjectId(user_id),
+            "drawing_name": drawing_data["drawing_name"],
+            "about": drawing_data["about"],
             "created_at": datetime.utcnow(),
         }
 
@@ -26,12 +20,15 @@ class DrawingRepository:
         drawing_id = str(result.inserted_id)
         return drawing_id
 
-    # def get_tweet_by_tweet_id(self, tweet_id: str) -> dict:
-    #     if ObjectId.is_valid(tweet_id):
-    #         tweet = self.database["tweets"].find_one({"_id": ObjectId(tweet_id)})
-    #     else:
-    #         tweet = self.database["tweets"].find_one({"_id": tweet_id})
-    #     return tweet
+    def get_drawings_by_user_id(self, user_id: str) -> List[dict]:
+        drawings = self.database["drawings"].find({"created_by": ObjectId(user_id)})
+
+        drawings_list = []
+
+        for drawing in drawings:
+            drawings_list.append(drawing)
+        return drawings_list
+
     #
     # def update_tweet(self, tweet_id: str, updated_data: dict) -> bool:
     #     updated_data["updated_at"] = datetime.utcnow()
