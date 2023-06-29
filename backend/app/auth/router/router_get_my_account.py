@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import Depends
 from pydantic import Field
 
-from backend.app.utils import AppModel
+from ...utils import AppModel
 
 from ..adapters.jwt_service import JWTData
 from ..service import Service, get_service

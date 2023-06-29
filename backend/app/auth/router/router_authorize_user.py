@@ -1,7 +1,6 @@
 from fastapi import Depends
-from fastapi.security import OAuth2PasswordRequestForm
 
-from backend.app.utils import AppModel
+from ...utils import AppModel
 
 from ..service import Service, get_service
 from ..utils.security import check_password
@@ -14,12 +13,17 @@ class AuthorizeUserResponse(AppModel):
     token_type: str = "Bearer"
 
 
+class AuthorizeUserRequest(AppModel):
+    email: str
+    password: str
+
+
 @router.post("/users/tokens", response_model=AuthorizeUserResponse)
 def authorize_user(
-    input: OAuth2PasswordRequestForm = Depends(),
-    svc: Service = Depends(get_service),
+        input: AuthorizeUserRequest,
+        svc: Service = Depends(get_service),
 ) -> AuthorizeUserResponse:
-    user = svc.repository.get_user_by_email(input.username)
+    user = svc.repository.get_user_by_email(input.email)
 
     if not user:
         raise InvalidCredentialsException

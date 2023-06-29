@@ -1,6 +1,6 @@
 from pydantic import BaseSettings
 
-from backend.app.config import database
+from ..config import database
 
 from .adapters.jwt_service import JwtService
 from .repository.repository import DrawingRepository
