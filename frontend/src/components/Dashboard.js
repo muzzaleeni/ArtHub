@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
+import DrawingForm from "./DrawingForm";
 
 const Dashboard = () => {
   const [drawings, setDrawings] = useState([]);
