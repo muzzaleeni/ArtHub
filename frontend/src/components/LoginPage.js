@@ -3,22 +3,31 @@ import "./LoginPage.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+const LoginPage = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
 
   // Handle login submission
   const handleLogin = () => {
+    const formData = new URLSearchParams();
+    formData.append("grant_type", "password");
+    formData.append("username", username);
+    formData.append("password", password);
+
     axios
-      .post("http://localhost:8000/auth/users/tokens", {
-        email: email,
-        password: password,
+      .post("http://localhost:8000/auth/users/tokens", formData, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       })
       .then((res) => {
         // Perform login success operations
         setLoginStatus("success");
+        const token = res.data.access_token;
+        localStorage.setItem("authToken", token); // Store the token in local storage
+        setIsAuthenticated(true); // Set isAuthenticated to true
         navigate("/dashboard");
         console.log(res);
       })
@@ -42,8 +51,8 @@ const LoginPage = () => {
         <span className="card-text">
           <input
             className="mb-2 form-control"
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="Email"
+            onChange={(event) => setUsername(event.target.value)}
+            placeholder="Username"
           />
           <input
             className="mb-2 form-control"

@@ -11,8 +11,8 @@ class GetDrawingsResponse(AppModel):
     drawings: List[dict]
 
 
-@router.get("/drawings", response_model=GetDrawingsResponse)
-def get_drawings(
+@router.get("/personal", response_model=GetDrawingsResponse)
+def get_user_drawings(
     jwt_data: JWTData = Depends(parse_jwt_user_data),
     svc: Service = Depends(get_service),
 ) -> GetDrawingsResponse:

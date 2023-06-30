@@ -4,7 +4,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function RegistrationPage() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [registrationStatus, setRegistrationStatus] = useState("");
 
@@ -12,7 +12,7 @@ function RegistrationPage() {
   const addUserHandler = () => {
     axios
       .post("http://localhost:8000/auth/users", {
-        email: email,
+        username: username,
         password: password,
       })
       .then((res) => {
@@ -46,8 +46,8 @@ function RegistrationPage() {
         <span className="card-text">
           <input
             className="mb-2 form-control titleIn"
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="Email"
+            onChange={(event) => setUsername(event.target.value)}
+            placeholder="Username"
           />
           <input
             className="mb-2 form-control desIn"
