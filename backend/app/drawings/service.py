@@ -1,5 +1,6 @@
 from pydantic import BaseSettings
 from ..config import database
+from .adapters.firebase_service import FirebaseService
 from .adapters.jwt_service import JwtService
 from .repository.repository import DrawingRepository
 import os
@@ -22,7 +23,9 @@ class Service:
         self,
         repository: DrawingRepository,
         jwt_svc: JwtService,
+        firebase: FirebaseService,
     ):
+        self.firebase = firebase
         self.repository = repository
         self.jwt_svc = jwt_svc
 
@@ -30,6 +33,7 @@ class Service:
 def get_service():
     repository = DrawingRepository(database)
     jwt_svc = JwtService(config.JWT_ALG, config.JWT_SECRET, config.JWT_EXP)
+    firebase = FirebaseService()
 
-    svc = Service(repository, jwt_svc)
+    svc = Service(repository, jwt_svc, firebase)
     return svc
