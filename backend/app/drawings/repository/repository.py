@@ -1,7 +1,7 @@
 from datetime import datetime
 from bson.objectid import ObjectId
 from pymongo.database import Database
-from typing import List
+from typing import List, BinaryIO
 
 
 class DrawingRepository:
@@ -14,6 +14,7 @@ class DrawingRepository:
             "drawing_name": drawing_data["drawing_name"],
             "about": drawing_data["about"],
             "created_at": datetime.utcnow(),
+            "files": List,
         }
 
         result = self.database["drawings"].insert_one(payload)
@@ -28,6 +29,16 @@ class DrawingRepository:
         for drawing in drawings:
             drawings_list.append(drawing)
         return drawings_list
+
+    def insert_files(self, commit: List, user_id: str, drawing_id: str):
+        commit[0]["date"] = datetime.utcnow()
+        self.database["drawings"].update_one(
+            filter={
+                "_id": ObjectId(drawing_id),
+                "created_by": ObjectId(user_id),
+            },
+            update={"$push": {"files": commit}},
+        )
 
     #
     # def update_tweet(self, tweet_id: str, updated_data: dict) -> bool:
