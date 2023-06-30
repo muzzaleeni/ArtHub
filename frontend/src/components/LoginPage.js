@@ -3,7 +3,7 @@ import "./LoginPage.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+const LoginPage = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -25,6 +25,7 @@ const LoginPage = () => {
       .then((res) => {
         // Perform login success operations
         setLoginStatus("success");
+        setIsAuthenticated(true); // Set isAuthenticated to true
         navigate("/dashboard");
         console.log(res);
       })
