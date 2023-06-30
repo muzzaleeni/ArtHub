@@ -2,7 +2,7 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from pymongo.database import Database
 from typing import List, BinaryIO
-
+from pymongo.errors import CollectionInvalid
 
 class DrawingRepository:
     def __init__(self, database: Database):
@@ -14,12 +14,19 @@ class DrawingRepository:
             "drawing_name": drawing_data["drawing_name"],
             "about": drawing_data["about"],
             "created_at": datetime.utcnow(),
-            "files": List,
+            "files": [],
         }
 
-        result = self.database["drawings"].insert_one(payload)
-        drawing_id = str(result.inserted_id)
-        return drawing_id
+        try:
+            result = self.database["drawings"].insert_one(payload)
+            drawing_id = str(result.inserted_id)
+            return drawing_id
+        except CollectionInvalid:
+            # Collection does not exist, create it dynamically
+            self.database.create_collection("drawings")
+            result = self.database["drawings"].insert_one(payload)
+            drawing_id = str(result.inserted_id)
+            return drawing_id
 
     def get_drawings_by_user_id(self, user_id: str) -> List[dict]:
         drawings = self.database["drawings"].find({"created_by": ObjectId(user_id)})
@@ -39,6 +46,18 @@ class DrawingRepository:
             },
             update={"$push": {"files": commit}},
         )
+
+    def get_drawing(self, user_id, drawing_id):
+        user_obj_id = ObjectId(user_id)
+        drawing_obj_id = ObjectId(drawing_id)
+        return self.database["drawings"].find_one({"created_by": user_obj_id, "_id": drawing_obj_id})
+
+    def get_commits(self, user_id, drawing_id):
+        drawing = get_drawings_by_user_id(user_id, drawing_id)
+        if not drawing:
+            return []
+        commits = [commit[0] for commit in drawing.get("files", []) if isinstance(commit, list) and len(commit) > 1]
+        return commits
 
     #
     # def update_tweet(self, tweet_id: str, updated_data: dict) -> bool:

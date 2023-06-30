@@ -1,8 +1,8 @@
 from fastapi import Depends, HTTPException
-from app.auth.adapters.jwt_service import JWTData
-from app.auth.router.dependencies import parse_jwt_user_data
-from app.utils import AppModel
-from app.drawings.service import Service, get_service
+from ...auth.adapters.jwt_service import JWTData
+from ...auth.router.dependencies import parse_jwt_user_data
+from ...utils import AppModel
+from ...drawings.service import Service, get_service
 from . import router
 from typing import List
 
