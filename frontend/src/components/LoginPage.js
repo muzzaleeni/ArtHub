@@ -5,16 +5,22 @@ import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
 
   // Handle login submission
   const handleLogin = () => {
+    const formData = new URLSearchParams();
+    formData.append("grant_type", "password");
+    formData.append("username", username);
+    formData.append("password", password);
+
     axios
-      .post("http://localhost:8000/auth/users/tokens", {
-        email: email,
-        password: password,
+      .post("http://localhost:8000/auth/users/tokens", formData, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       })
       .then((res) => {
         // Perform login success operations
@@ -42,8 +48,8 @@ const LoginPage = () => {
         <span className="card-text">
           <input
             className="mb-2 form-control"
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="Email"
+            onChange={(event) => setUsername(event.target.value)}
+            placeholder="Username"
           />
           <input
             className="mb-2 form-control"
