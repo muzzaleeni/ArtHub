@@ -25,6 +25,8 @@ const LoginPage = ({ setIsAuthenticated }) => {
       .then((res) => {
         // Perform login success operations
         setLoginStatus("success");
+        const token = res.data.access_token;
+        localStorage.setItem("authToken", token); // Store the token in local storage
         setIsAuthenticated(true); // Set isAuthenticated to true
         navigate("/dashboard");
         console.log(res);

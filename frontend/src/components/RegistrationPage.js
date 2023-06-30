@@ -12,7 +12,7 @@ function RegistrationPage() {
   const addUserHandler = () => {
     axios
       .post("http://localhost:8000/auth/users", {
-        email: username,
+        username: username,
         password: password,
       })
       .then((res) => {
