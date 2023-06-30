@@ -6,8 +6,6 @@ __pycache__/
 # C extensions
 *.so
 
-serviceAccountKey.json
-
 # Distribution / packaging
 .Python
 build/
@@ -141,3 +139,6 @@ backup.dump.gz
 .vscode
 
 requirements.txt
+
+# json
+*.json
